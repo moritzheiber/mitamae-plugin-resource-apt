@@ -3,7 +3,7 @@ module ::MItamae
     module ResourceExecutor
       class Apt < ::MItamae::ResourceExecutor::Base
         TWO_HOURS = 60*60*2
-        APT_LAST_UPDATED_FILE = '/var/lib/apt/periodic/update-success-stamp'
+        APT_LAST_UPDATED_DIRECTORY = '/var/lib/apt/lists'
 
         def apply
           update_cache if cache_outdated
@@ -32,7 +32,7 @@ module ::MItamae
 
         def cache_outdated(hours_ago=TWO_HOURS)
           # We are dealing with mruby here
-          (Time.now - File::Stat.new(APT_LAST_UPDATED_FILE).mtime) > hours_ago
+          (Time.now - File::Stat.new(APT_LAST_UPDATED_DIRECTORY).mtime) > hours_ago
         end
 
         def update_cache
